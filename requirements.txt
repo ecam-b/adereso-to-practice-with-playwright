@@ -1,0 +1,5 @@
+pytest-playwright
+pytest-html
+allure-pytest
+python-dotenv
+playwright==1.57.0

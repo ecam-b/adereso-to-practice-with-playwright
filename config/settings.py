@@ -1,0 +1,9 @@
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+class Config:
+    URL = os.getenv("WEB_URL")
+    USER = os.getenv("UI_USER")
+    PASSWORD = os.getenv("UI_PASS")
