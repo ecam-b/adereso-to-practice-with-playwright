@@ -22,9 +22,9 @@ def set_up(page: Page):
         
     except Exception as e:
         print(f"[SETUP ERROR] Falló el login UI: {e}")
-        try:
-            page.screenshot(path="login_failed.png")
-        except: pass
+        #try:
+        #    page.screenshot(path="login_failed.png")
+        #except: pass
         raise e
     # ------------------
 
