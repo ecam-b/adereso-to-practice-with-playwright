@@ -1,6 +1,7 @@
 import time
 from playwright.sync_api import Locator
 from pages.inbox.modals.create_column import CreateColumnModal
+from pages.inbox.components.ticket_component import TicketComponent
 
 
 class ColumnComponent:
@@ -13,6 +14,9 @@ class ColumnComponent:
         self.opt_edit = self.floating_menu.locator('div[ng-click="editColumn()"]')
         self.opt_export = self.floating_menu.locator("div[ng-click='exportColumn()']")
         self.opt_delete = self.floating_menu.locator("div[ad-confirm-click='deleteColumn()']")
+
+        self.tickets_holder = self.root.locator('div').filter(has=self.page.locator('[adereso-virtual-repeat]')).first
+        self.ticket_items = self.root.locator('.case-list')
 
     def open_options(self):
         """Abre el menú y asegura que sea visible antes de retornar."""
@@ -51,3 +55,10 @@ class ColumnComponent:
 
         from pages.inbox.modals.delete_confirmation_modal import DeleteConfirmationModal
         return DeleteConfirmationModal(self.page)
+
+    def get_ticket_by_id(self, ticket_id: str) -> TicketComponent:
+        ticket_locator = self.ticket_items.filter(has_text=ticket_id)
+        return TicketComponent(ticket_locator)
+
+    def get_all_tickets_count(self) -> int:
+        return self.ticket_items.count()
