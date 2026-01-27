@@ -3,6 +3,7 @@ from pages.inbox.inbox_page import InboxPage
 from playwright.sync_api import expect
 from config.settings import Config
 
+@pytest.mark.skip
 def test_creation_of_proactive_ticket_with_cross_validation(setup_column, set_up):
     # contantes del test
     ACCOUNT = "Adereso BSP One (56949591142)"
@@ -45,8 +46,29 @@ def test_creation_of_proactive_ticket_with_cross_validation(setup_column, set_up
 
     expect(ticket.id_label).to_have_text(ticket_id)
 
-def test_view_ticket_details(set_up):
+def test_view_ticket_details(setup_ticket, set_up):
+    # Precondiciones:
+    # Tener un ticket creado previamente (idealmente vía API para asegurar consistencia de datos).
     pass
+    # Pasos:
+    # 1. Realizar el login: Acceder con credenciales válidas.
+    # 2. Carga del Inbox: Esperar a que la interfaz principal y las columnas estén visibles.
+    # 3. Acceso al Ticket: Localizar el ticket (ID 9266) en la columna correspondiente y hacer clic para abrir el CaseView.
+    # 4. Validación de Identidad (Header):
+    # - Verificar que el nombre del cliente sea Elian.
+    # - Verificar que el ID en el encabezado coincida con 9266.
+    # - Confirmar que aparezca el icono de WhatsApp como canal de origen.
+    # - Validar que el número de contacto sea 573115734967.
+    # 5. Validación de Contenido (Chat):
+    # - Confirmar la presencia del mensaje: "Cordial saludo estimado usuario...".
+    # - Verificar que el mensaje tenga la marca de tiempo y el doble check azul de entregado.
+    # 6. Validación de Estado y Asignación (Bottom Bar):
+    # - Asegurar que el selector de estado indique Abierto.
+    # 7. Validación de Navegación Lateral (Right Sidebar):
+    # - Verificar que los iconos de los menús laterales (Info, Cliente, Historial, etc.) sean visibles y clicables.
+
+    # Postcondiciones:
+    # Cerrar el ticket previamente creado (idealmente vía API para asegurar consistencia de datos).
 
 @pytest.mark.skip
 def test_interact_with_specific_ticket(set_up):

@@ -4,6 +4,7 @@ from playwright.sync_api import Page, expect
 from config.settings import Config
 from pages.auth.login_page import LoginPage
 from apis.column_api import ColumnAPI
+from apis.ticket_api import TicketAPI
 
 @pytest.fixture(scope="function")
 def set_up(page: Page):
@@ -40,7 +41,6 @@ def set_up_no_auth(page: Page):
 @pytest.fixture(scope="function")
 def setup_column(page):
     api = ColumnAPI(page.request)
-
     api.login(
         username=Config.USER,
         password=Config.PASSWORD,
@@ -56,3 +56,23 @@ def setup_column(page):
         api.delete_column(column_id)
     except Exception as e:
         print(f"No se pudo eliminar columna {column_id}: {e}")
+
+@pytest.fixture(scope="function")
+def setup_ticket(page):
+    api = TicketAPI(page.request)
+    api.login(
+        username=Config.USER,
+        password=Config.PASSWORD,
+        response_user="true"
+    )
+
+    ticket_data = api.create_ticket(Config.SIMPLE_HSM_TEXT, Config.BSP_ID, Config.PHONE)
+    ticket_id = ticket_data["case_id"]
+    ticket_identifier = api.get_ticket_identifier(ticket_id)
+
+    yield ticket_identifier
+
+    try:
+        api.close_ticket(ticket_id)
+    except Exception as e:
+        print(f"No se pudo cerrar el ticket {ticket_id}: {e}")
