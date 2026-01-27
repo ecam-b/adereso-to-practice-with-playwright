@@ -1,6 +1,52 @@
 import pytest
 from pages.inbox.inbox_page import InboxPage
 from playwright.sync_api import expect
+from config.settings import Config
+
+def test_creation_of_proactive_ticket_with_cross_validation(setup_column, set_up):
+    # contantes del test
+    ACCOUNT = "Adereso BSP One (56949591142)"
+    DEPARTMENT = "Sin departamento"
+    TEMPLATE = Config.SIMPLE_HSM_TEXT
+    PHONE = "+573115734967"
+    # 1. Realizar el login
+    # 2. Esperar a que el inbox cargue correctamente
+    page = set_up
+    inbox = InboxPage(page)
+    # 3. Click en el boton "Crear nuevo ticket"
+    # 4. Esperar a que el modal cargue
+    modal = inbox.sidebar.open_new_ticket_modal()
+    # 5. Seleccionar la cuenta de origen "Adereso BSP One (56949591142)"
+    # 6. Seleccionar un departamento "Sin departamento"
+    # 7. Seleccionar una plantilla "qa_test_simple_text_1"
+    # 8. Llenar el campo Cliente con el numero de telefono "+573115734967"
+    # 9. Click en "Enviar mensaje"
+    alert = modal.creat_new_ticket(
+        ACCOUNT,
+        DEPARTMENT,
+        TEMPLATE,
+        PHONE
+    )
+    # 10. Esperar a que desaparezca el modal
+    expect(modal.container).to_be_hidden(timeout=30000)
+    # 11. Validar que aparezca la alerta de creación exitosa con el link del ticket.
+    alert.wait_until_visible()
+    expect(alert.container).to_contain_text("HSM enviado exitosamente")
+    # 12. Hacer clic en el enlace del ticket dentro de la alerta de éxito.
+    case_view = alert.go_to_new_ticket() #uid
+    # 13. Extraer el ID del ticket desde el encabezado del detalle.
+    # .strip() quita espacios y saltos de linea
+    ticket_id = case_view.get_id_label().inner_text().strip() # obtiene el text visible del locator mediante .inner_text() #id tipo: 9455
+    print(f"El id del ticket creado es: {ticket_id}") 
+    # 14. Volver al inbox y validar que el ticket aparezca en la columna disponibles mediante su id.
+    column = case_view.get_column()
+    column.refresh_if_needed(timeout=20000)
+    ticket = column.get_ticket_by_id(ticket_id)
+
+    expect(ticket.id_label).to_have_text(ticket_id)
+
+def test_view_ticket_details(set_up):
+    pass
 
 @pytest.mark.skip
 def test_interact_with_specific_ticket(set_up):
@@ -16,10 +62,6 @@ def test_interact_with_specific_ticket(set_up):
 
     expect(case_view.get_id_label()).to_contain_text(ticket_id)
 
-def test_creation_of_proactive_ticket_with_cross_validation(setup_column, set_up):
-    page = set_up
-    column_id, column_name = setup_column["resource_id"], setup_column["name"]
-    print(f"La columna {column_name} corresponde al id: {column_id}")
 
 @pytest.mark.skip
 def test_validate_open_status_ticket(set_up):

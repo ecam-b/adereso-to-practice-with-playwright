@@ -1,3 +1,5 @@
+
+
 class ColumnAPI:
     def __init__(self, request_context):
         self.request = request_context
@@ -50,3 +52,27 @@ class ColumnAPI:
             headers=self._get_headers()
             )
         assert response.ok, f"Error al eliminar columna: {response.text}"
+
+    def create_ticket(self, simple_hsm, bsp_id, phone_client):
+        payload = {
+            "hsmFlag": True,
+            "sn": "whatsapp",
+            "content": simple_hsm,
+            "hsm_parameters": [],
+            "hsm_count": 1,
+            "account": { 
+                "id": bsp_id,
+                "sn": "whatsapp"
+            },
+            "user": {
+                "name": f"+{phone_client}",
+                "phone_number": f"+{phone_client}"
+            }
+        }
+        response = self.request.post(
+            f"{self.base_url}/api/v1/cases/new/",
+            data=payload,
+            headers=_get_headers()
+        )
+        assert response.ok, f"Error al crear ticket: {response.text}"
+        return response.json()

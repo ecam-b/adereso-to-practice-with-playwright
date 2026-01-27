@@ -18,6 +18,8 @@ class ColumnComponent:
         self.tickets_holder = self.root.locator('div').filter(has=self.page.locator('[adereso-virtual-repeat]')).first
         self.ticket_items = self.root.locator('.case-list')
 
+        self.btn_refresh = self.root.locator(".new-messages")
+
     def open_options(self):
         """Abre el menú y asegura que sea visible antes de retornar."""
         self.burger_menu.click()
@@ -62,3 +64,10 @@ class ColumnComponent:
 
     def get_all_tickets_count(self) -> int:
         return self.ticket_items.count()
+
+    def refresh_if_needed(self, timeout=10000):
+        try:
+            self.btn_refresh.wait_for(state="visible", timeout=timeout)
+            self.btn_refresh.click()
+        except:
+            pass
