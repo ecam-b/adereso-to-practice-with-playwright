@@ -3,7 +3,7 @@ from config.settings import Config
 class BaseAPI:
     def __init__(self, request_context):
         self.request = request_context
-        self.base_url = Config.URL
+        self.base_url = "https://apicaulifla.adere.so"
         self.token = None
     
     def login(self, username: str, password: str, response_user: str = "true"):

@@ -1,5 +1,6 @@
 import pytest
 from pages.inbox.inbox_page import InboxPage
+from pages.inbox.case_view_page import CaseViewPage
 from playwright.sync_api import expect
 from config.settings import Config
 
@@ -49,24 +50,40 @@ def test_creation_of_proactive_ticket_with_cross_validation(setup_column, set_up
 def test_view_ticket_details(setup_ticket, set_up):
     # Precondiciones:
     # Tener un ticket creado previamente (idealmente vía API para asegurar consistencia de datos).
-    pass
     # Pasos:
     # 1. Realizar el login: Acceder con credenciales válidas.
     # 2. Carga del Inbox: Esperar a que la interfaz principal y las columnas estén visibles.
+    page = set_up
     # 3. Acceso al Ticket: Localizar el ticket (ID 9266) en la columna correspondiente y hacer clic para abrir el CaseView.
+    # O ir directamente con url
+    ticket_identifier = setup_ticket
+    page.goto(f"{Config.URL}/#/inbox/case/{ticket_identifier}/")
     # 4. Validación de Identidad (Header):
     # - Verificar que el nombre del cliente sea Elian.
+    case_view = CaseViewPage(page)
+    expect(case_view.client_name).to_contain_text(Config.CLIENT_NAME)
     # - Verificar que el ID en el encabezado coincida con 9266.
+    expect(case_view.id_label).to_contain_text(f"{ticket_identifier}")
     # - Confirmar que aparezca el icono de WhatsApp como canal de origen.
+    expect(case_view.footer).to_be_visible(timeout=10000)
+    expect(case_view.account_selector).to_contain_text(Config.ACCOUNT_NAME)
     # - Validar que el número de contacto sea 573115734967.
+    expect(case_view.client_phone).to_contain_text(Config.PHONE)
     # 5. Validación de Contenido (Chat):
     # - Confirmar la presencia del mensaje: "Cordial saludo estimado usuario...".
+    expect(case_view.last_message).to_contain_text(Config.CONTAIN_SIMPLE_HSM_TEXT)
     # - Verificar que el mensaje tenga la marca de tiempo y el doble check azul de entregado.
+    expect(case_view.first_check).to_be_visible()
     # 6. Validación de Estado y Asignación (Bottom Bar):
     # - Asegurar que el selector de estado indique Abierto.
+    expect(case_view.status_text_label).to_contain_text("Abierto")
     # 7. Validación de Navegación Lateral (Right Sidebar):
     # - Verificar que los iconos de los menús laterales (Info, Cliente, Historial, etc.) sean visibles y clicables.
-
+    sidebar = case_view.right_sidebar
+    expect(sidebar.btn_datos_perfil).to_be_visible()
+    expect(sidebar.btn_datos_ticket).to_be_visible()
+    expect(sidebar.btn_anteriores).to_be_visible()
+    expect(sidebar.btn_historial).to_be_visible()
     # Postcondiciones:
     # Cerrar el ticket previamente creado (idealmente vía API para asegurar consistencia de datos).
 

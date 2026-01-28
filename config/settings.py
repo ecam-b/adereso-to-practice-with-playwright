@@ -12,4 +12,6 @@ class Config:
     BSP_ID = "315"
     DEPARTMENT = "Sin departamento"
     SIMPLE_HSM_TEXT = "qa_test_simple_text_1"
+    CONTAIN_SIMPLE_HSM_TEXT = "Cordial saludo estimado usuario, esta es una prueba de comunicacion desde la seccion (Sin Departamento). Que tenga un gran dia."
     PHONE = "573115734967"
+    CLIENT_NAME = "Elian"
