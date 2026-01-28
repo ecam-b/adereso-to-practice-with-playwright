@@ -9,6 +9,7 @@ class Config:
     PASSWORD = os.getenv("UI_PASS")
     ACCOUNT = "Adereso BSP One (56949591142)"
     ACCOUNT_NAME = "Adereso BSP One"
+    ACCOUNT_NUMBER = "56949591142"
     BSP_ID = "315"
     DEPARTMENT = "Sin departamento"
     SIMPLE_HSM_TEXT = "qa_test_simple_text_1"
