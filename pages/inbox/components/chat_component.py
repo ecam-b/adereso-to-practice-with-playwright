@@ -10,6 +10,7 @@ class ChatComponent:
         self.first_check = self.date_creation.locator("i.fa-check").first
 
         self.last_message_image = self.last_message.locator('message-image[ng-repeat="image in message.media_set"]')
+        self.last_message_document = self.last_message.locator('message-document.message-document')
 
     def get_src_image_message(self) -> str:
         """Obtiene el src de la imagen del último mensaje"""
@@ -19,3 +20,12 @@ class ChatComponent:
         assert src, "El atributo src está vacío"
         
         return src
+    
+    def get_link_document_message(self) -> str:
+        """Obtiene el link del documento PDF del último mensaje"""
+        expect(self.last_message_document).to_be_visible(timeout=10000)
+        link = self.last_message_document.get_attribute('link')
+        # Validar que no esté vacío
+        assert link, "El atributo link está vacío"
+        
+        return link
