@@ -5,5 +5,5 @@ class CaseHeaderComponent:
         self.root = root_locator
 
         self.client_name = self.root.locator(".name")
-        self.id_label = self.root.locator('.case-detail-badge._button')
+        self.id_label = self.root.locator('.case-detail-badge._button') #identificador
         self.client_phone = self.root.locator('span[ng-if="vm.userObject.uname"]')

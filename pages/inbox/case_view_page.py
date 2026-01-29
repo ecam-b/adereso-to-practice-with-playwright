@@ -3,6 +3,7 @@ from pages.inbox.components.right_sidebar import RightSideBar
 from pages.inbox.components.case_header_component import CaseHeaderComponent
 from pages.inbox.components.case_footer_component import CaseFooterComponent
 from pages.inbox.components.chat_component import ChatComponent
+from config.settings import Config
 
 class CaseViewPage:
     def __init__(self, page):
@@ -21,8 +22,8 @@ class CaseViewPage:
 
         self.column = self.column_container.locator(".column")
 
-    def get_id_label(self):
-        return self.id_label ##retorna el localizador en vez de texto plano
-
     def get_column(self):
         return ColumnComponent(self.column)
+
+    def go_to_ticket(self, ticket_id: str):
+        self.page.goto(f"{Config.URL}/#/inbox/case/{ticket_id}/")
