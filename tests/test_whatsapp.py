@@ -4,7 +4,7 @@ from pages.inbox.case_view_page import CaseViewPage
 from playwright.sync_api import expect
 import pytest
 
-@pytest.mark.skip
+# @pytest.mark.skip
 def test_whatsapp_message_persistence(set_up):
     MSG_TESTER = "Mensaje de prueba desde el tester"
     MSG_EXECUTIVE = "Hola buenas tardes desde Adereso Desk"

@@ -5,11 +5,13 @@ from config.settings import Config
 from pages.auth.login_page import LoginPage
 from apis.column_api import ColumnAPI
 from apis.ticket_api import TicketAPI
+from datetime import datetime
 
 @pytest.fixture(scope="function")
 def set_up(page: Page):
     # Configuración de pantalla Full HD
-    page.set_viewport_size({"width": 1920, "height": 1080})
+    # page.set_viewport_size({"width": 1920, "height": 1080})
+    page.set_viewport_size({"width": 1280, "height": 720}) # para portatil
     
     # --- Login Flow ---
     print(f"\n[SETUP] Iniciando Login UI para test actual...")
@@ -76,3 +78,8 @@ def setup_ticket(page):
         api.close_ticket(ticket_id)
     except Exception as e:
         print(f"No se pudo cerrar el ticket {ticket_id}: {e}")
+
+@pytest.fixture
+def unique_name():
+    timestamp = datetime.now().strftime("%H_%M_%Y_%m_%d")
+    return f"campaign_{timestamp}"

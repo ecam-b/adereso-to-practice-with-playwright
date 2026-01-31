@@ -2,7 +2,7 @@ from playwright.sync_api import expect
 from pages.inbox.inbox_page import InboxPage
 import pytest
 
-@pytest.mark.skip
+#@pytest.mark.skip
 def test_create_column(set_up):
     page = set_up
     inbox_p = InboxPage(page)
@@ -11,7 +11,7 @@ def test_create_column(set_up):
     modal.wait_until_visible()
     modal.fill_and_save("Ventas")
 
-@pytest.mark.skip
+#@pytest.mark.skip
 def test_edit_exiting_column(set_up):
     page = set_up
     inbox_p = InboxPage(page)

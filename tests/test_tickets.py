@@ -4,7 +4,7 @@ from pages.inbox.case_view_page import CaseViewPage
 from playwright.sync_api import expect
 from config.settings import Config
 
-@pytest.mark.skip
+# @pytest.mark.skip
 def test_creation_of_proactive_ticket_with_cross_validation(setup_column, set_up):
     # contantes del test
     ACCOUNT = "Adereso BSP One (56949591142)"
@@ -87,7 +87,7 @@ def test_view_ticket_details(setup_ticket, set_up):
     # Postcondiciones:
     # Cerrar el ticket previamente creado (idealmente vía API para asegurar consistencia de datos).
 
-@pytest.mark.skip
+# @pytest.mark.skip
 def test_interact_with_specific_ticket(set_up):
     page = set_up
     inbox = InboxPage(page)
@@ -102,7 +102,7 @@ def test_interact_with_specific_ticket(set_up):
     expect(case_view.get_id_label()).to_contain_text(ticket_id)
 
 
-@pytest.mark.skip
+# @pytest.mark.skip
 def test_validate_open_status_ticket(set_up):
     page = set_up
     inbox = InboxPage(page)
